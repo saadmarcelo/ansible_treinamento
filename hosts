@@ -1,0 +1,10 @@
+[webserver_centos]
+10.0.2.4
+
+[webserver_debian]
+10.0.2.6
+
+[servidores:children]
+webserver_centos
+webserver_debian
+

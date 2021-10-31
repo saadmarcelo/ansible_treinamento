@@ -1,0 +1,35 @@
+---
+# tasks file for saad_inicial
+
+- name: Atualizacao de Sistemas Operacionais Debian
+  apt:
+    name: "*"
+    state: latest
+    update_cache: yes
+    autoremove: yes
+  when: ansible_distribution == "Debian"
+
+
+- name: Atualizacao de Sistemas operacionais CentOS
+  dnf:
+    name: "*"
+    state: latest
+  when: ansible_distribution == "CentOS"
+
+
+- name: Instalacao de pacotes basicos
+  package:
+    name:
+      - vim
+      - bacula-client
+      - net-tools
+    state: latest
+
+- name: copiando .vimrc para usuarios
+  copy:
+    src: .vimrc 
+    dest: /home/saad/
+    owner: saad
+    group: saad
+    mode: 0644
+...
