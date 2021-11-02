@@ -2,6 +2,11 @@
 # vars file for saad_inicia
 users:
   - username: dany
+  - use_group: clti
+
   - username: figueiredo
+  - use_group: clti
+  
   - username: lopes
+  - use_group: clti
 ...

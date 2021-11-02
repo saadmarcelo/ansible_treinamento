@@ -1,2 +1,19 @@
 ---
-# defaults file for saad_inicial
+
+common_packges_centos:
+  - "@Development tools"
+  - bind-utils
+  - bc
+  - git
+  - net-tools
+  - vim
+  - wget
+  - tree
+
+common_packges_debian:
+  - build-essential
+  - net-tools
+  - bc
+  - vim
+  - tree
+...

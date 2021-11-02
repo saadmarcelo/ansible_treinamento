@@ -14,22 +14,84 @@
   dnf:
     name: "*"
     state: latest
+    update_only: yes
   when: ansible_distribution == "CentOS"
 
 
-- name: Instalacao de pacotes basicos
-  package:
-    name:
-      - vim
-      - bacula-client
-      - net-tools
-    state: latest
+#- name: Instalacao de pacotes basicos
+#  package:
+ #   name:
+ #     - vim
+ #     - bacula-client
+ #     - net-tools
+ #   state: latest
 
-- name: copiando .vimrc para usuarios
+- name: Intalacao de pacotes basico (Debian)
+  apt:
+    name: "{{ common_packges_debian }}"
+    state: latest
+  when: ansible_distribution == "Debian"
+
+- name: Instalacao de pacotes basicps CentOS
+  yum:
+    name: "{{ common_packges_centos }}"
+    state: latest
+  when: ansible_distribution == "CentOS"
+
+
+
+
+
+
+- name: Desabilitando o SELINUX (Temporariamente)
+  selinux: state=disabled
+  when: ansible_distribution == "CentOS"
+
+- name: Desabilitando o SELINUX (Permanentemente)
+  replace:
+    dest=/etc/selinux/config
+    regexp='SELINUX=enforcing'
+    replace='SELINUX=disabled'
+  when: ansible_distribution == "CentOS"
+
+
+- name: copiando .vimrc para usuario saad
   copy:
     src: .vimrc 
     dest: /home/saad/
     owner: saad
     group: saad
     mode: 0644
+
+- name: copiando .vimrc para a pasta skel
+  copy:
+    src: .vimrc
+    dest: /etc/skel/
+    owner: root
+    group: root
+    mode: 0644
+
+- name : criando usuario ansible
+  user:
+    name: ansible
+    groups: root
+    system: yes
+    generate_ssh_key: yes
+
+- name: Criando o grupo clti 
+  group: 
+    name: clti
+    state: present
+
+- name: criando usuarios usando variaveis
+  user:
+    name: "{{ item.username }}"
+    groups: clti
+    generate_ssh_key: yes
+  with_items:
+    - { username: 'dany'}
+    - { username: 'figueiredo'}
+    - { username: 'Lopes'}
+      
+
 ...
