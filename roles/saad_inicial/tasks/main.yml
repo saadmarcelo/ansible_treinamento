@@ -38,11 +38,6 @@
     state: latest
   when: ansible_distribution == "CentOS"
 
-
-
-
-
-
 - name: Desabilitando o SELINUX (Temporariamente)
   selinux: state=disabled
   when: ansible_distribution == "CentOS"
@@ -92,6 +87,10 @@
     - { username: 'dany'}
     - { username: 'figueiredo'}
     - { username: 'Lopes'}
-      
+     
+- name: add user on Sudoers
+  lineinfile:
+    dest: /etc/sudoers
+    line: '%clti  ALL=(ALL:ALL) NOPASSWD: ALL'
 
 ...
