@@ -83,11 +83,22 @@
     name: "{{ item.username }}"
     groups: clti
     generate_ssh_key: yes
-  with_items:
-    - { username: 'dany'}
-    - { username: 'figueiredo'}
-    - { username: 'Lopes'}
-     
+  with_items: "{{ users }}"
+ #   - { username: 'dany'}
+ #   - { username: 'figueiredo'}
+ #   - { username: 'Lopes'}
+    
+- name: Copiando o SSH Key
+  authorized_key:
+    user: dany
+    state: present
+    key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDcuMdw7a4zJY/f2mUt1MSvVFTtCDj60Zhp3zwFj4QScuzNAE5FC1Bf6tUhxTBgYQ+Lbl4l3A8SYvIXPuV8UpdJ5qf45W74a3CDQujxhu5nMUQwP5ev1QsJuTz61sUPaBsvcnim1CfWpRjN+7RGXSFPJD7LKmdkBflC5xnOE2WNFXBxA1d72MxKLGHCQ2LvGOIChva1WEp2wBGAjhaesdr+T2Nw5h7/Ja1YnfuyOWBEbC0Ax81IYFym0dsx9CUST8fWLqGr+9b7AOVeDV1TrgTPQjMHlQ6tgoOcNY864dv3zKVITLSlN73E7AUZ84vnhmUPUXJPJuchzSU+w5LCbviNtOysFh3uQ0QWMjOoeKU99PbwSzR+7vPHmi8gXmNV3XUEOa6G0wT+ueZ0R0YERfmEey7O9F9rwtciyTVlSBMhCcapU8rulrjcCbIJ4oriXU8waJd6nq4FRur0OiDaRn3bIKuqAUFAmUHaZ8QMWmwtWQ85BFDRBogcazOKwK4J0ns= dany@ansible"
+
+
+
+
+
+
 - name: add user on Sudoers
   lineinfile:
     dest: /etc/sudoers
