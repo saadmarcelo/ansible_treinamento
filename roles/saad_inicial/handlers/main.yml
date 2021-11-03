@@ -1,2 +1,7 @@
 ---
 # handlers file for saad_inicial
+
+- name: Restart Chrony
+  systemd: state=restarted enabled=yes deamon_reload=yes name=chrony
+
+...

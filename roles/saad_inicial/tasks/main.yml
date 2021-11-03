@@ -49,6 +49,15 @@
     replace='SELINUX=disabled'
   when: ansible_distribution == "CentOS"
 
+- name: mudando /etc/profile
+  lineinfile: dest=/etc/profile line={{ item }}
+  loop:
+    - '#--- Default export & Alias ---#'
+    - 'export HISTSIZE="5000"'
+    - 'export TERM=linux'
+    - 'alias ls="ls -lh --color"'
+    - 'alias grep="grep --color"'
+    - 'alias vi="vim"'
 
 - name: copiando .vimrc para usuario saad
   copy:
@@ -66,7 +75,23 @@
     group: root
     mode: 0644
 
-- name : criando usuario ansible
+- name: Configurando o localtime
+  file: src=/usr/share/zoneinfo/{{ timezone }} dest=/etc/localtime state=link force=yes
+
+- name: Configurando o Chrony (CentOS)
+  lineinfile:
+    dest: /etc/chrony.conf
+    line: "Server 10.0.2.5"
+  when: ansible_distribution == "CentOS"
+
+- name: Configurando o Chrony (Debian)
+  lineinfile:
+    dest: /etc/chrony/chrony.conf
+    line: "Server 10.0.2.5"
+  when: ansible_distribution == "Debian"
+  notify: Restart Chrony
+
+- name: criando usuario ansible
   user:
     name: ansible
     groups: root
@@ -83,7 +108,7 @@
     name: "{{ item.username }}"
     groups: clti
     generate_ssh_key: yes
-  with_items: "{{ users }}"
+  loop: "{{ users }}"
  #   - { username: 'dany'}
  #   - { username: 'figueiredo'}
  #   - { username: 'Lopes'}
@@ -93,11 +118,6 @@
     user: dany
     state: present
     key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDcuMdw7a4zJY/f2mUt1MSvVFTtCDj60Zhp3zwFj4QScuzNAE5FC1Bf6tUhxTBgYQ+Lbl4l3A8SYvIXPuV8UpdJ5qf45W74a3CDQujxhu5nMUQwP5ev1QsJuTz61sUPaBsvcnim1CfWpRjN+7RGXSFPJD7LKmdkBflC5xnOE2WNFXBxA1d72MxKLGHCQ2LvGOIChva1WEp2wBGAjhaesdr+T2Nw5h7/Ja1YnfuyOWBEbC0Ax81IYFym0dsx9CUST8fWLqGr+9b7AOVeDV1TrgTPQjMHlQ6tgoOcNY864dv3zKVITLSlN73E7AUZ84vnhmUPUXJPJuchzSU+w5LCbviNtOysFh3uQ0QWMjOoeKU99PbwSzR+7vPHmi8gXmNV3XUEOa6G0wT+ueZ0R0YERfmEey7O9F9rwtciyTVlSBMhCcapU8rulrjcCbIJ4oriXU8waJd6nq4FRur0OiDaRn3bIKuqAUFAmUHaZ8QMWmwtWQ85BFDRBogcazOKwK4J0ns= dany@ansible"
-
-
-
-
-
 
 - name: add user on Sudoers
   lineinfile:
