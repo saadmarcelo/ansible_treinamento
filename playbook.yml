@@ -3,4 +3,5 @@
   roles:
    # - common
    # - updates
-    - saad_inicial
+   # - saad_inicial
+    - nginx
