@@ -1,5 +1,5 @@
 - name: Default Playbook  - Starting Deploy
-  hosts: all
+  hosts: webserver_centos
   roles:
    # - common
    # - updates

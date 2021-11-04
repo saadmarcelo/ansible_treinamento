@@ -1,2 +1,43 @@
 ---
 # tasks file for nginx
+
+- name: Copiando o nginx.repo para o servidor
+  copy: src=nginx.repo dest=/etc/yum.repos.d/nginx.repo
+
+- name: atualizando o sistema operacional
+  yum: name=* state=latest update_cache=yes
+
+- name: instalacao de dependencias
+  yum:
+    name: ['unzip', 'tar']
+    state: latest
+
+- name: instalacao do nginx
+  yum:
+    name: ['nginx.x86_64', 'nginx-debuginfo.x86_64']
+    state: latest
+
+- name: mundando o dono e o grupo do nginx diretorio
+  file:
+    path: /etc/nginx
+    owner: root
+    group: root
+    mode: 0755
+    recurse: yes
+
+- name: creando o diretorio /var/www/html
+  file: path={{item}} state=directory mode=755 owner=nginx group=nginx
+  loop:
+    - /var/www
+    - /var/www/html
+
+- name: copiando o index.html
+  copy: src={{ item }} dest=/var/www/html force=yes owner=nginx group=nginx mode=0644
+  loop:
+    - index.html
+
+- name: parando o firewall
+  shell: nft flush ruleset
+  args:
+    warn: false
+  notify: Restart nginx
