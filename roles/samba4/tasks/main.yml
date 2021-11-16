@@ -16,7 +16,7 @@
 
   - name: Desabilitando o SELINUX (permanente)
     replace: 
-      dest=/etc/selinux/config
+      path=/etc/selinux/config
       regexp='SELINUX=enforcing'
       replace='SELINUX=disabled'
 
@@ -27,7 +27,7 @@
 
   - name: Habilitando Powertol repositorio
     replace:
-      dest=/etc/yum.repos.d/CentOS-Stream-PowerTools.repo
+      path=/etc/yum.repos.d/CentOS-Stream-PowerTools.repo
       regexp='enabled=0'
       replace='enabled=1'
 
@@ -38,15 +38,41 @@
     yum: name={{ common_packges }} state=latest
 
 
-## editar o arquivi /etc/hosts
+## editar o arquivo /etc/hosts e nome da maquina
 
   - name: editar arquivo /etc/hosts
     lineinfile:
-      dest: /etc/hosts
+      path: /etc/hosts
       line: "10.0.2.4 clti9dnfs1.clti9d.ad clti9dnfs1"
   
   - name: Mudando o nome do servidor
     ansible.builtin.hostname:
       name: clti9dnfs1
+
+
+
+## editar o arquivo /etc/sysctl.conf
+
+  - name: Editando arquivo /etc/sysctl.conf
+    lineinfile:
+      path: /etc/sysctl.conf
+      line: "vm.swappiness = 0"
+
+##Editando o /etc/resolv.conf
+
+
+  - name: Editando o /etc/resolv.conf
+    lineinfile:
+      path: /etc/resolv.conf
+      line: "{{ item.line }}"
+    loop:
+      - { line: "nameserver 10.0.2.4" }
+      - { line: "nameserver 10.0.2.5" }
+      - { line: "search clti9d.ad" }
+      - { line: "domain clti9d.ad" }
+
+
+
+
 
 ...
