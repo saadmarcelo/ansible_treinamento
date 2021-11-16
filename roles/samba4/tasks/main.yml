@@ -38,6 +38,15 @@
     yum: name={{ common_packges }} state=latest
 
 
+## editar o arquivi /etc/hosts
 
+  - name: editar arquivo /etc/hosts
+    lineinfile:
+      dest: /etc/hosts
+      line: "10.0.2.4 clti9dnfs1.clti9d.ad clti9dnfs1"
+  
+  - name: Mudando o nome do servidor
+    ansible.builtin.hostname:
+      name: clti9dnfs1
 
 ...
