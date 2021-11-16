@@ -71,8 +71,15 @@
       - { line: "search clti9d.ad" }
       - { line: "domain clti9d.ad" }
 
+## Movendo o instalador do samba para pasta /opt e descompactando o arquivo
 
+  - name: Copiando o instalador do samba para pasta /opt
+    copy: src=samba-latest.tar.gz dest=/opt
 
-
+  - name: Extraindo o conteudo do instalador samba.tar.gz
+    unarchive:  
+      src: /opt/samba-latest.tar.gz
+      dest: /opt/
+      remote_src: yes
 
 ...
