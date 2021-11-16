@@ -82,4 +82,13 @@
       dest: /opt/
       remote_src: yes
 
+
+## executando o .configure && make && make install
+
+
+  - name: executando o .configure && make && make install
+    shell: ./configure.developer && make && make install
+    args: 
+      chdir: /opt/samba-4.15.2/
+
 ...
