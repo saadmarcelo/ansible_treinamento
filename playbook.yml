@@ -1,7 +1,8 @@
 - name: Default Playbook  - Starting Deploy
-  hosts: webserver_centos
+  hosts: centos_client
   roles:
    # - common
    # - updates
    # - saad_inicial
-    - nginx
+   # - nginx
+   - samba4

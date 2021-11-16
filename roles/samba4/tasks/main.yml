@@ -1,0 +1,43 @@
+---
+# tasks file for samba4
+
+
+
+### Parando o firewall desabilidanando da inicializacao e desabilitando o SELINUX
+
+  - name: Parando o firewall 
+    systemd: name=firewalld state=stopped     
+  
+  - name: Desabilitar o servico Firewalld da inicializacao 
+    systemd: name=firewalld enabled=no
+  
+  - name: Desabilitando o SELINUX (temp)
+    selinux: state=disabled
+
+  - name: Desabilitando o SELINUX (permanente)
+    replace: 
+      dest=/etc/selinux/config
+      regexp='SELINUX=enforcing'
+      replace='SELINUX=disabled'
+
+
+## Instalando os pacotes basicos para instalacao do samba4
+  - name: Instalacao de repositorio epel
+    yum: name=epel-release state=latest
+
+  - name: Habilitando Powertol repositorio
+    replace:
+      dest=/etc/yum.repos.d/CentOS-Stream-PowerTools.repo
+      regexp='enabled=0'
+      replace='enabled=1'
+
+  - name: Atualizando lista de repositorios
+    yum: name=* state=latest
+
+  - name: Instalacao de pacotes basicos
+    yum: name={{ common_packges }} state=latest
+
+
+
+
+...
