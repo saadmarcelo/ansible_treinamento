@@ -162,7 +162,7 @@
       insertafter: "allow-query     { localhost; };"
       block: |  
         forwarders {
-            {{ dns_distrital }}
+            {{ dns_distrital }};
         };
   - name: Passando as variaveis para o /etc/krb5.conf
     lineinfile:
@@ -176,5 +176,15 @@
       group: named
 
 
+## restartando os servicos
+  
+  - name: restartando o named
+    service:
+      name: named
+      state: restarted
 
+  - name: restartando o samba4
+    service:
+      name: samba4
+      state: restarted
 ...
