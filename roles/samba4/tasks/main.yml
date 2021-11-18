@@ -66,10 +66,10 @@
       path: /etc/resolv.conf
       line: "{{ item.line }}"
     loop:
-      - { line: "nameserver 10.0.2.4" }
+      - { line: "nameserver {{ ansible_default_ipv4.address }} " }
       - { line: "nameserver 10.0.2.5" }
-      - { line: "search clti9d.ad" }
-      - { line: "domain clti9d.ad" }
+      - { line: "search {{ nome_dominio }}" }
+      - { line: "domain {{ nome_dominio }}" }
 
 ## Movendo o instalador do samba para pasta /opt e descompactando o arquivo
 
@@ -86,9 +86,20 @@
 ## executando o .configure && make && make install
 
 
-  - name: executando o .configure && make && make install
-    shell: ./configure.developer && make && make install
-    args: 
-      chdir: /opt/samba-4.15.2/
+#  - name: executando o .configure && make && make install
+#    shell: ./configure.developer && make && make install
+#    args: 
+#      chdir: /opt/samba-4.15.2/
+
+## exportar o samba/sbin samba/bin para o PATH
+
+  - name: Exportando o sama/bin e samba/sbin para o PATH
+    lineinfile:
+      path: /home/saad/.bash_profile
+      line: "export PATH=$PATH:/usr/local/samba/sbin:/usr/local/samba/bin"
+
+
+
+
 
 ...

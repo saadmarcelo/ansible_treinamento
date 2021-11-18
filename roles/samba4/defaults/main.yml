@@ -102,7 +102,7 @@ common_packges:
   - yum-utils 
   - zlib-devel
 
-
+nome_dominio: clti9dn.ad
 
 
 ...
