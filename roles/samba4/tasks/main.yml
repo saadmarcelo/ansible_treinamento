@@ -123,4 +123,22 @@
   - debug:
       msg: "{{ provision.stdout }}"
 
+
+## criar o arquivo de execucao do samba4 e inicializar automaticamente
+
+  - name: Copiando o arquivo samba4 para pasta /etc/rc.d/init.d/
+    copy: 
+      src: samba4 
+      dest: /etc/rc.d/init.d/
+      owner: root
+      group: root
+      mode: 0755
+
+## link simbolico 
+  - name: link simbolico samba4
+    shell: "{{ item.shell }}"
+    loop:
+      - { shell: "ln -s /etc/rc.d/init.d/samba4 /etc/rc3.d/s80samba4" }
+      - { shell: "chkconfig --add samba4" }
+      - { shell: "chkconfig samba4 on" }
 ...
