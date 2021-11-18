@@ -99,21 +99,6 @@
       line: "export PATH=$PATH:/usr/local/samba/sbin:/usr/local/samba/bin"
 
 
-## Editar o arquivo /etc/kr5.conf
-
-  - name: zerando o arquivo /etc/krb5.conf
-    shell: echo '[libdefaults]' > /etc/krb5.conf
-
-  - name: Passando as variaveis para o /etc/krb5.conf
-    lineinfile:
-      path: /etc/krb5.conf
-      line: "{{ item.line }}"
-    loop:
-      - { line: "default_realm {{ realm_nome }} " }
-      - { line: "dns_lookup_realm = false" }
-      - { line: "dns_lookup_kdc = true"}
-
-
 ## provisionando o samba
 
   - name: Provisionando o samba4

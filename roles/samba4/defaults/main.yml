@@ -104,6 +104,7 @@ common_packges:
 
 nome_dominio: clti9dn.ad
 password: M@rinha123
-realm_nome: clti9d
+realm_nome: CLTI9D.AD
+domain: CLTI9D
 
 ...
