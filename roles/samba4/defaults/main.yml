@@ -103,6 +103,7 @@ common_packges:
   - zlib-devel
 
 nome_dominio: clti9dn.ad
-
+password: M@rinha123
+realm_nome: clti9d
 
 ...
