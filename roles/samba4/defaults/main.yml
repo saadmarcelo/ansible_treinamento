@@ -7,7 +7,9 @@ common_packges:
   - attr 
   - autoconf 
   - avahi-devel 
-  - bind-utils 
+  - bind-utils
+  - bind
+  - bind-sdb
   - binutils 
   - bison 
   - ccache 
@@ -102,9 +104,10 @@ common_packges:
   - yum-utils 
   - zlib-devel
 
+dns_distrital: 10.0.2.5
 nome_dominio: clti9dn.ad
 password: M@rinha123
 realm_nome: CLTI9D.AD
 domain: CLTI9D
-
+rede_om: 10.0.2.0/24
 ...

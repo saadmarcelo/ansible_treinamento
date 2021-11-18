@@ -67,7 +67,7 @@
       line: "{{ item.line }}"
     loop:
       - { line: "nameserver {{ ansible_default_ipv4.address }} " }
-      - { line: "nameserver 10.0.2.5" }
+      - { line: "nameserver {{ dns_distrital }}" }
       - { line: "search {{ nome_dominio }}" }
       - { line: "domain {{ nome_dominio }}" }
 
@@ -135,10 +135,46 @@
       mode: 0755
 
 ## link simbolico 
-  - name: link simbolico samba4
-    shell: "{{ item.shell }}"
-    loop:
-      - { shell: "ln -s /etc/rc.d/init.d/samba4 /etc/rc3.d/s80samba4" }
-      - { shell: "chkconfig --add samba4" }
-      - { shell: "chkconfig samba4 on" }
+#  - name: link simbolico samba4
+#    shell: "{{ item.shell }}"
+#    loop:
+#      - { shell: "ln -s /etc/rc.d/init.d/samba4 /etc/rc3.d/s80samba4" }
+#      - { shell: "chkconfig --add samba4" }
+#      - { shell: "chkconfig samba4 on" }
+#    args:
+#      warn: false
+
+
+
+
+## Editar o arquivo /etc/named.conf
+
+  - name: Editando o arquivo /etc/named.conf
+    replace:
+      path: /etc/named.conf
+      regexp: "listen-on port 53 { 127.0.0.1; };"
+      replace: "listen-on port 53 { {{ rede_om }} ; };"
+
+  - name: adicionando o forward no /etc/named.conf
+    blockinfile:
+      path: /etc/named.conf
+      regexp: " allow-query     { localhost; };"
+      insertafter: "allow-query     { localhost; };"
+      block: |  
+        forwarders {
+            {{ dns_distrital }}
+        };
+  - name: Passando as variaveis para o /etc/krb5.conf
+    lineinfile:
+      path: /etc/named.conf
+      line: 'include "/usr/local/samba/bind-dns/named.conf";' 
+
+  - name: acertando as permissoes do arquivo /etc/named.conf
+    file:
+      path: /etc/named.conf
+      owner: named
+      group: named
+
+
+
 ...
